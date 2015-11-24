@@ -2,19 +2,21 @@
     (:require [clojure.data.json :as json])
     (:gen-class))
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+(defn print-problem
+  "Prints a problem"
+  [p]
+  (doseq [ row p]
+    (doseq [ cell row ]
+      (print cell " "))
+    (println)))
 
 (defn read-problem
       "Reads a problem from json"
-      [&]
+      [file]
       (json/read-str
-        (slurp "problem1.json")))
+        (slurp file)))
 
-(defn print-problem
-      "Prints a problem"
-      [p]
-      (doseq i (range 9)
-             ))
+(defn -main
+  "I don't do a whole lot ... yet."
+  [& args]
+  (print-problem (read-problem "resources/problem1.json")))
