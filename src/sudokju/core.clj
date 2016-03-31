@@ -20,7 +20,16 @@
 (defn base-n
   "Returns the base number of the problem ie number of rows and columns"
   [ problem ]
-  (+ (count problem) 1))
+  (count problem))
+
+(defn sqrt
+  "Returns the whole number square root of a number."
+  [ n ]
+  (loop [ k 1 ]
+    (if (= (* k k) n)
+      k
+      (recur (inc k))))
+  )
 
 (defn base-k
   "Returns the square root of the base number."
@@ -39,19 +48,17 @@
 
 (defn cell
   "Returns the k x k cell which the (i,j) position belongs to"
-  [ problem i j ]
-  (let [ k (base-k problem)
-         n (base-n problem) ]
-    (let [ i-start (* k (quot i k))
-           i-end (* (+ k 1) (quot i k))
-           j-start (* k (quot j k))
-           j-end (* (+ k 1) (quot j k))]
+  [problem i j]
 
+  (def k (base-k problem))
+  (def i-start (- i (mod i k)))
+  (def i-end (+ i-start k))
+  (def j-start (- j (mod j k)))
+  (def j-end (+ j-start k))
+
+  (let [ rows (drop i-start (take i-end problem))]
+    (print-problem rows)
     )
-
-
-
-  (loop [ p ])
   )
 
 (defn candidates-base
