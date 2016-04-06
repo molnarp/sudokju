@@ -46,20 +46,22 @@
   [ problem j ]
   (map nth problem (repeat (base-n problem) j)))
 
+(defn segment
+  "Returns the segment specified by the two arguments"
+  [ start end xs ]
+  (drop start (take end xs)))
+
 (defn cell
   "Returns the k x k cell which the (i,j) position belongs to"
   [problem i j]
 
   (def k (base-k problem))
   (def i-start (- i (mod i k)))
-  (def i-end (+ i-start k))
+  (def i-end (* (inc (quot i k)) k))
   (def j-start (- j (mod j k)))
-  (def j-end (+ j-start k))
+  (def j-end (* (inc (quot j k)) k))
 
-  (let [ rows (drop i-start (take i-end problem))]
-    (print-problem rows)
-    )
-  )
+  (mapcat (partial segment j-start j-end) (segment i-start i-end problem)))
 
 (defn candidates-base
   "Returns the basic set of candidates."
@@ -82,14 +84,21 @@
     (set (col problem j)))
   )
 
-;(defn candidates
-;  "Finds candidates for the specified space, i-th row, j-th column"
-;  [problem i j]
-;  (set/intersection
-;    (candidates-row problem i)
-;    (candidates-column problem j)
-;    (candidates-square problem i j))
-;  )
+(defn candidates-cell
+  "Finds candidates in the specified cell"
+  [problem i j ]
+  (set/difference
+    (candidates-base problem)
+    (set (cell problem i j))))
+
+(defn candidates
+  "Finds candidates for the specified space, i-th row, j-th column"
+  [problem i j]
+  (set/intersection
+    (candidates-row problem i)
+    (candidates-column problem j)
+    (candidates-cell problem i j))
+  )
 
 (defn has-duplicates
   "Checks if the passed list contains duplicates except for zeros"
@@ -109,17 +118,6 @@
   "Checks the specified row of the passed problem, if it's valid."
   [ problem rowNum ]
   (has-duplicates (nth problem rowNum)))
-
-(defn verify-column
-  "Checks the specified column of the passed problem if it's valid."
-  [ problem colNum ]
-  (has-duplicates ))
-
-  ;(defn verify-segment
-  ;  "Checks if the specified segment is valid"
-  ;  [ problem segmentNum ]
-  ;  (let i range (quot (count problem segmentNum) (+ (count problem segmentNum) 2))))
-
 
 (defn -main
   "I don't do a whole lot ... yet."
