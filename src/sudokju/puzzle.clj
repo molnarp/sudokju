@@ -5,9 +5,10 @@
 (defn load-puzzle
   "Reads a problem from json"
   [file]
-  (def matrix (json/read-str (slurp file)))
-  (def k (root-of matrix))
-  {:base (* k k) :root k :matrix matrix})
+  (let [matrix (json/read-str (slurp file))
+        k (root-of matrix)]
+    {:base (* k k) :root k :matrix matrix})
+)
 
 (defn print-puzzle
   "Prints a problem"
@@ -39,11 +40,10 @@
 (defn cell
   "Returns the cell of position (i j)"
   [ puzzle i j ]
-  (def i-start (- i (mod i (:root puzzle))))
-  (def i-end (* (inc (quot i (:root puzzle))) (:root puzzle)))
-  (def j-start (- j (mod j (:root puzzle))))
-  (def j-end (* (inc (quot j (:root puzzle))) (:root puzzle)))
-
-  (mapcat
-    (partial seq-segment j-start j-end)
-    (seq-segment i-start i-end (:matrix puzzle))))
+  (let [i-start (- i (mod i (:root puzzle)))
+        i-end (* (inc (quot i (:root puzzle))) (:root puzzle))
+        j-start (- j (mod j (:root puzzle)))
+        j-end (* (inc (quot j (:root puzzle))) (:root puzzle))]
+    (mapcat
+      (partial seq-segment j-start j-end)
+      (seq-segment i-start i-end (:matrix puzzle)))))
