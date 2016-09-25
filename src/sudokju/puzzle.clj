@@ -1,6 +1,7 @@
 (ns sudokju.puzzle
   (:require [sudokju.util :refer :all]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojure.set :refer :all]))
 
 (defn load-puzzle
   "Reads a problem from json"
@@ -18,6 +19,11 @@
     (doseq [ val row ]
       (print val " "))
     (println)))
+
+(defn pos
+  "Returns the number at position (i j)"
+  [ puzzle i j ]
+  (nth (nth (:matrix puzzle) i) j))
 
 (defn row
   "Returns the i-th row as a list"
@@ -47,3 +53,22 @@
     (mapcat
       (partial seq-segment j-start j-end)
       (seq-segment i-start i-end (:matrix puzzle)))))
+
+(defn candidates
+  "Returns candidates for given position (i j"
+  [ puzzle i j ]
+  (if (not (= 0 (pos puzzle i j)))
+    #{}
+    (difference
+      (set (range 1 (:base puzzle)))
+      (set (row puzzle i))
+      (set (col puzzle j))
+      (set (cell puzzle i j)))))
+
+(defn fill-pos
+  "Fills in position i j in puzzle with number n"
+  [ puzzle i j n ]
+  (assert (= 0 (pos puzzle i j)))
+  (let [updated-row (assoc (row puzzle i) j n)
+        updated-matrix (assoc (:matrix puzzle) i updated-row)]
+       (assoc puzzle :matrix updated-matrix)))
