@@ -22,13 +22,17 @@
   (testing "read row of puzzle"
     (is (=
           [0 1 0 3]
-          (row puzzle 1)))))
+          (row puzzle 1))))
+  (testing "row 1"
+    (is (= [0 1 0 3] (row puzzle 1)))))
 
 (deftest second-column-of-puzzle
   (testing "read 2nd row of puzzle"
     (is (=
           [0 1 3 0]
-          (col puzzle 1)))))
+          (col puzzle 1))))
+  (testing "col 0"
+    (is (= [3 0 2 1] (col puzzle 0)))))
 
 (deftest cell-at-2-2
   (testing "Cell at location (0 0)"
@@ -38,13 +42,19 @@
   (testing "Cell at location (2 2)"
     (is (=
           [0 0 0 2]
-          (cell puzzle 2 2)))))
+          (cell puzzle 2 2))))
+  (testing "cell at (1 0)"
+    (is (= [3 0 0 1] (cell puzzle 1 0)))))
 
 (deftest test-candidates
   (testing "no candidates on filled position"
     (is (= #{} (candidates puzzle 0 0))))
   (testing "candidates on unfilled position"
-    (is (= #{2} (candidates puzzle 0 1)))))
+    (is (= #{2} (candidates puzzle 0 1))))
+  (testing "candidates at (1 0)"
+    (is (= #{4} (candidates puzzle 1 0))))
+  (testing "candidates at (3 1)"
+    (is (= #{4} (candidates puzzle 3 1)))))
 
 (deftest test-fill-pos
   (testing "fill in pos 0 1"

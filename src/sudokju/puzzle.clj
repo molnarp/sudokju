@@ -60,7 +60,7 @@
   (if (not (= 0 (pos puzzle i j)))
     #{}
     (difference
-      (set (range 1 (:base puzzle)))
+      (set (range 1 (inc (:base puzzle)) ))
       (set (row puzzle i))
       (set (col puzzle j))
       (set (cell puzzle i j)))))
