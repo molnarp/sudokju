@@ -7,7 +7,7 @@
 
 (deftest test-next-moves
   (testing "list next moves"
-    (pprint (next-moves puzzle))
+    ;(pprint (next-moves puzzle))
     (is (= [{:i 0 :j 1 :value 2}
             {:i 0 :j 3 :value 1}
             {:i 1 :j 0 :value 4}

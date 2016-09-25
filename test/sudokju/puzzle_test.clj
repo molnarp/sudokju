@@ -9,8 +9,9 @@
     (is (= {:base 4 :root 2 :matrix [[3 0 4 0] [0 1 0 3] [2 3 0 0] [1 0 0 2]]}
            (load-puzzle "resources/problem2.json"))))
 
-  (testing "print 2-by-2 sudoku"
-    (print-puzzle (load-puzzle "resources/problem2.json"))))
+  ;(testing "print 2-by-2 sudoku"
+  ;  (print-puzzle (load-puzzle "resources/problem2.json")))
+  )
 
 (deftest test-pos
   (testing "position at (0 2)"
