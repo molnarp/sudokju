@@ -1,28 +1,20 @@
 # sudokju
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
+Sudoku solver implemented in Clojure.
 
 ## Usage
 
-FIXME: explanation
+    $ java -jar sudokju-0.1.0-standalone.jar [puzzle.json]
 
-    $ java -jar sudokju-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
+## Puzzle format
+```json
+[
+  [ 3, 0, 4, 0 ],
+  [ 0, 1, 0, 3 ],
+  [ 2, 3, 0, 0 ],
+  [ 1, 0, 0, 2 ]
+]
+```
 
 ### Any Other Sections
 ### That You Think
@@ -30,7 +22,7 @@ FIXME: listing of options this app accepts.
 
 ## License
 
-Copyright © 2015 FIXME
+Copyright © 2016 Peter Molnar
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
