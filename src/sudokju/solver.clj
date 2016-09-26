@@ -16,6 +16,16 @@
    {:puzzle (fill-pos (:puzzle puzzle-with-history)  (:i move) (:j move) (:value move))
     :history (cons move (:history puzzle-with-history))})
 
+(defn single-moves
+  "Perform all single moves"
+  [ puzzle-with-history ]
+  (let [{:keys [ puzzle history ]} puzzle-with-history]
+    (loop [pwh puzzle-with-history
+           ms (filter #((= 1 (:weight %))) (next-moves puzzle))]
+      (if (empty? ms)
+        pwh
+        (recur (move pwh (first ms)) (rest ms))))))
+
 (defn done?
   "Tests if a puzzle is done"
   [puzzle-with-history]

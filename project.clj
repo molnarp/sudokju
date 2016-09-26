@@ -7,6 +7,8 @@
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/data.json "0.2.6"]
                  ]
+  :plugins [[lein-cloverage "1.0.6"]
+            [jonase/eastwood "0.2.3"]]
   :main ^:skip-aot sudokju.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
