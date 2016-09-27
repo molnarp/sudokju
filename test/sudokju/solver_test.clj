@@ -32,13 +32,13 @@
 (deftest test-single-moves
   (testing "all single moves"
     (is (= {:puzzle {:base 4 :root 2 :matrix [[3 2 4 1] [4 1 2 3] [2 3 1 0] [1 4 3 2]] }
-            :history '({:i 0 :j 1 :value 2 :weight 1}
-                        {:i 0 :j 3 :value 1 :weight 1}
-                        {:i 1 :j 0 :value 4 :weight 1}
-                        {:i 1 :j 2 :value 2 :weight 1}
-                        {:i 2 :j 2 :value 1 :weight 1}
-                        {:i 3 :j 1 :value 4 :weight 1}
-                        {:i 3 :j 2 :value 3 :weight 1})}
+            :history (reverse '({:i 0 :j 1 :value 2 :weight 1}
+                                 {:i 0 :j 3 :value 1 :weight 1}
+                                 {:i 1 :j 0 :value 4 :weight 1}
+                                 {:i 1 :j 2 :value 2 :weight 1}
+                                 {:i 2 :j 2 :value 1 :weight 1}
+                                 {:i 3 :j 1 :value 4 :weight 1}
+                                 {:i 3 :j 2 :value 3 :weight 1}))}
            (single-moves {:puzzle puzzle :history ()})))))
 
 (deftest test-done

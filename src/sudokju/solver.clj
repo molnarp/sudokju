@@ -19,9 +19,10 @@
 (defn single-moves
   "Perform all single moves"
   [ puzzle-with-history ]
-  (let [{:keys [ puzzle history ]} puzzle-with-history]
+  (let [{:keys [ puzzle history ]} puzzle-with-history
+        is-weight-1? (fn [ m ] (= 1 (:weight m)))]
     (loop [pwh puzzle-with-history
-           ms (filter #((= 1 (:weight %))) (next-moves puzzle))]
+           ms (filter is-weight-1? (next-moves puzzle))]
       (if (empty? ms)
         pwh
         (recur (move pwh (first ms)) (rest ms))))))
