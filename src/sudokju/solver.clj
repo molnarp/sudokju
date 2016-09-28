@@ -34,7 +34,7 @@
 (defn done?
   "Tests if a puzzle is done"
   [puzzle-with-history]
-  (let [{:keys [puzzle history]} puzzle-with-history]
+  (let [{:keys [puzzle _]} puzzle-with-history]
     (every?
       (partial not-any? (partial = 0))
       (:matrix puzzle))))
@@ -56,6 +56,17 @@
                     j (range 0 base root)]
                 (set (cell puzzle i j)))))))
 
+(defn do-multi-moves
+  "Performs multi-moves on the puzzle and returns list new branches."
+  [puzzle-with-history moves]
+  (loop [ms moves
+         result []]
+    (if (empty? ms)
+      result
+      (recur
+        (rest ms)
+        (cons (perform-moves puzzle-with-history (seq (first ms))) result)))))
+
 (defn solve
   "Solves sudoku puzzles"
   [puzzle]
@@ -68,8 +79,7 @@
       (let [pwh-non-single (do-single-moves (first pwhs))
             moves (next-moves (:puzzle pwh-non-single))]
         (recur
-          (reduce
-            (fn [pwhs move] (cons (perform-moves pwh-non-single (seq move)) pwhs))
-            pwhs
-            moves)
+          (concat
+            (do-multi-moves pwh-non-single moves)
+            pwhs)
           solutions)))))
