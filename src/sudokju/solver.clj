@@ -8,24 +8,28 @@
   (for [i (range 0 (:base puzzle))
         j (range 0 (:base puzzle))
         n (candidates puzzle i j)]
-      {:i i :j j :value n :weight (count (candidates puzzle i j))}))
+    {:i i :j j :value n :weight (count (candidates puzzle i j))}))
 
-(defn move
-  "Perform move on puzzle"
-  [puzzle-with-history move]
-   {:puzzle (fill-pos (:puzzle puzzle-with-history)  (:i move) (:j move) (:value move))
-    :history (cons move (:history puzzle-with-history))})
+(defn perform-moves
+  "Perform moves and return puzzle after the moves have been made."
+  [ puzzle-with-history moves ]
+  (loop [pwh puzzle-with-history
+         ms moves]
+    (if (empty? ms)
+      pwh
+      (let [move (first ms)]
+        (recur {:puzzle (fill-pos (:puzzle pwh)  (:i move) (:j move) (:value move))
+                :history (cons move (:history pwh))}
+               (rest ms))))))
 
-(defn single-moves
-  "Perform all single moves"
-  [ puzzle-with-history ]
-  (let [{:keys [ puzzle history ]} puzzle-with-history
-        is-weight-1? (fn [ m ] (= 1 (:weight m)))]
-    (loop [pwh puzzle-with-history
-           ms (filter is-weight-1? (next-moves puzzle))]
-      (if (empty? ms)
+(defn do-single-moves
+  "Perform all single moves as much as possible"
+  [puzzle-with-history]
+  (loop [pwh puzzle-with-history]
+    (let [moves (filter #(= (:weight %) 1) (next-moves (:puzzle pwh)))]
+      (if (empty? moves)
         pwh
-        (recur (move pwh (first ms)) (rest ms))))))
+        (recur (perform-moves pwh moves))))))
 
 (defn done?
   "Tests if a puzzle is done"
@@ -50,7 +54,22 @@
       (every? complete?
               (for [i (range 0 base root)
                     j (range 0 base root)]
-                (set (cell puzzle i j))))
-      )
-    )
-  )
+                (set (cell puzzle i j)))))))
+
+(defn solve
+  "Solves sudoku puzzles"
+  [puzzle]
+  (loop [pwhs '({:puzzle puzzle :history ()})
+         solutions ()]
+    (cond
+      (empty? pwhs) solutions
+      (done? (first pwhs)) (recur (rest pwhs) (cons (first pwhs) solutions))
+      :else
+      (let [pwh-non-single (do-single-moves (first pwhs))
+            moves (next-moves (:puzzle pwh-non-single))]
+        (recur
+          (reduce
+            (fn [pwhs move] (cons (perform-moves pwh-non-single (seq move)) pwhs))
+            pwhs
+            moves)
+          solutions)))))
